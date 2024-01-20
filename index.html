@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #searchForm {
+            margin-bottom: 20px;
+        }
+
+        #results {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .resultItem {
+            border: 1px solid #ccc;
+            margin: 5px; 
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Page</h1>
+
+    <form id="searchForm">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" name="name">
+        <button type="button" onclick="search()">Search</button>
+    </form>
+
+    <ul id="results"></ul>
+
+    <script>
+        function search() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value;
+
+            fetch(`/search?name=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => displayResults(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayResults(results) {
+            const resultsList = document.getElementById('results');
+            resultsList.innerHTML = '';
+
+            results.forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('resultItem');
+                listItem.innerHTML = `<strong>Title:</strong> ${result.tital}, <strong>Author:</strong> ${result.auther}, <strong>Page:</strong> ${result.page}`;
+                resultsList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
